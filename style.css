@@ -13,13 +13,15 @@ body {
     min-height: 100vh;
     background-color: #111;
     font-family: sans-serif;
+    touch-action: manipulation; /* 더블 탭 줌인 방지 */
+    user-select: none; /* 텍스트 및 UI 더블클릭 선택 방지 */
+    -webkit-user-select: none; /* 사파리/iOS 텍스트 선택 방지 */
 }
 
 /* 게임 전체를 감싸는 컨테이너 스타일 */
 #game-container {
     width: 95vw; /* 화면 너비의 95%를 사용합니다. */
     max-width: 450px; /* 데스크탑 등 큰 화면에서 너무 커지지 않도록 최대 너비를 제한합니다. */
-    aspect-ratio: 9 / 16; /* 9:16 세로 비율을 강제하여 휴대폰 화면처럼 보이게 합니다. */
     
     background-color: #333;
     border: 2px solid #555;
@@ -71,18 +73,17 @@ body {
 /* 조작 버튼을 둘 UI 구역 스타일 */
 #ui-area {
     width: 100%;
-    flex: 1; /* 컨테이너의 남은 세로 공간을 모두 차지하도록 설정합니다. */
-    margin-top: 15px; /* 보드판과의 간격 */
+    margin-top: 10px; /* 보드판과의 간격 축소 */
     background-color: #222;
     border: 2px solid #555;
     border-radius: 8px;
     display: flex;
     flex-direction: column; /* 세로 정렬로 변경 */
     justify-content: center;
-    gap: 10px; /* 요소 간격 */
+    gap: 8px; /* 요소 간격 축소 */
     align-items: center;
     color: #fff;
-    padding: 10px 20px;
+    padding: 10px; /* 내부 여백 축소 */
 }
 
 #gold-display {

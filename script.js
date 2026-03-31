@@ -253,7 +253,6 @@ function updateMonsterPosition(monster, coord) {
 // 6. 타워 건설 및 공격 로직
 function buildTower() {
     if (gold < currentTowerCost) {
-        alert("골드가 부족합니다!");
         return;
     }
 
