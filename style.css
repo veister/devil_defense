@@ -84,6 +84,7 @@ body {
     align-items: center;
     color: #fff;
     padding: 10px; /* 내부 여백 축소 */
+    min-height: min(28.5vw, 135px); /* 보드 높이의 약 1/3을 최소 높이로 설정 */
 }
 
 #gold-display {
