@@ -1,0 +1,192 @@
+/* 모든 요소의 기본 여백을 제거하고, 테두리를 포함하여 크기를 계산하도록 설정합니다. */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* body 전체를 화면 중앙에 정렬하고, 어두운 배경색을 지정합니다. */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #111;
+    font-family: sans-serif;
+}
+
+/* 게임 전체를 감싸는 컨테이너 스타일 */
+#game-container {
+    width: 95vw; /* 화면 너비의 95%를 사용합니다. */
+    max-width: 450px; /* 데스크탑 등 큰 화면에서 너무 커지지 않도록 최대 너비를 제한합니다. */
+    aspect-ratio: 9 / 16; /* 9:16 세로 비율을 강제하여 휴대폰 화면처럼 보이게 합니다. */
+    
+    background-color: #333;
+    border: 2px solid #555;
+    border-radius: 10px;
+    padding: 10px;
+    
+    display: flex;
+    flex-direction: column;
+}
+
+/* 실제 게임이 진행될 보드판 스타일 */
+#game-board {
+    width: 90%; /* 양 옆에 여유를 주기 위해 너비를 100%에서 줄입니다. */
+    margin: 0 auto; /* 보드판을 가운데로 정렬합니다. */
+    aspect-ratio: 1 / 1; /* 보드판을 정사각형으로 만듭니다. */
+    background-color: #c98c4a; /* 눈이 편안한 어두운 주황색/갈색 */
+    position: relative; /* 버튼과 몬스터가 보드판을 기준으로 위치할 수 있도록 추가합니다. */
+    
+    /* CSS Grid를 사용하여 보드를 격자 형태로 만듭니다. */
+    display: grid;
+    /* 보드판이 정사각형이 되었으므로, 타일도 정사각형을 유지하도록 행(row)을 8개로 줄입니다. */
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    gap: 2px; /* 타일 사이의 간격을 줍니다. */
+    border: 2px solid #2d4229;
+}
+
+/* 상단 UI 구역 스타일 */
+#top-ui {
+    width: 90%;
+    margin: 0 auto 10px auto;
+    background-color: #222;
+    border: 2px solid #555;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+#lives-display {
+    color: #ff4757;
+    letter-spacing: 2px;
+}
+
+/* 조작 버튼을 둘 UI 구역 스타일 */
+#ui-area {
+    width: 100%;
+    flex: 1; /* 컨테이너의 남은 세로 공간을 모두 차지하도록 설정합니다. */
+    margin-top: 15px; /* 보드판과의 간격 */
+    background-color: #222;
+    border: 2px solid #555;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column; /* 세로 정렬로 변경 */
+    justify-content: center;
+    gap: 10px; /* 요소 간격 */
+    align-items: center;
+    color: #fff;
+    padding: 10px 20px;
+}
+
+#gold-display {
+    font-size: 16px;
+    font-weight: bold;
+    color: #f1c40f; /* 금색 */
+}
+
+/* 게임 내 개별 타일의 모습 (격자 무늬 표시 용도) */
+.tile {
+    /* background-color: rgba(255, 255, 255, 0.05); */
+    border-radius: 4px;
+}
+
+/* 보드 중앙의 시작 버튼 스타일 */
+#start-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* 정확히 한가운데로 오도록 보정합니다. */
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #ff6b6b;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 20; /* 몬스터보다 위에 보이도록 설정 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+/* 몬스터 기본 스타일 */
+.monster {
+    position: absolute;
+    border-radius: 50%; /* 둥근 형태 */
+}
+
+/* 몬스터 타입별 색상 */
+.monster.tornado { background-color: #a4b0be; } /* 회오리(회색) */
+.monster.ice { background-color: #70a1ff; } /* 얼음(파란색) */
+.monster.poison { background-color: #2ed573; } /* 독가스(초록색) */
+
+/* 몬스터 체력바 컨테이너 */
+.hp-bar-container {
+    position: absolute;
+    top: -8px; /* 몬스터 머리 위에 위치 */
+    left: -10%;
+    width: 120%; /* 몬스터보다 약간 넓게 */
+    height: 4px;
+    background-color: #ff4757; /* 빨간색 (깎인 체력 배경) */
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+/* 몬스터 현재 체력 (초록색) */
+.hp-bar-fill {
+    width: 100%;
+    height: 100%;
+    background-color: #2ed573;
+}
+
+/* 몬스터가 다니는 길 타일 스타일 */
+.path-tile {
+    background-color: #d49a5b; /* 보드보다 약간 어두운 색 */
+}
+
+/* 타워 스타일 */
+.tower {
+    position: absolute;
+    background-color: #8e44ad; /* 보라색 */
+    border: 2px solid #5d217a;
+    border-radius: 4px;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+}
+
+/* 미사일 스타일 */
+.missile {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: #ff3f34; /* 빨간색 */
+    border-radius: 50%;
+    z-index: 15; /* 몬스터와 타워보다 위에 표시 */
+    transition: all 0.15s linear; /* 0.15초 동안 목표지점으로 이동 */
+}
+
+/* 타워 생성 버튼 스타일 */
+#build-tower-btn {
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #3742fa;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+#build-tower-btn:hover {
+    background-color: #5352ed;
+}
